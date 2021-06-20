@@ -39,7 +39,7 @@ public class CsvResourceTest {
 
         String eventPath = "{\"filePath\" : \"correctPath\"}";
 
-        mockMvc.perform(post("/api/csv/upload/path")
+        mockMvc.perform(post("/iot/event/v1")
                 .content(eventPath)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -52,7 +52,7 @@ public class CsvResourceTest {
     void uploadCsvFileWithWrongPath() throws Exception {
         String eventPath = "{\"filePath\" : \"wrongPath\"}";
 
-        mockMvc.perform(post("/api/csv/upload/path")
+        mockMvc.perform(post("/iot/event/v1")
                 .content(eventPath)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -65,14 +65,14 @@ public class CsvResourceTest {
     void verifyDeviceFound() throws Exception {
         DeviceReport deviceReport = new DeviceReport("a","b","c","d","e","f","g","h");
         when(csvService.getEventByProductIdAndDateTime(any(),anyLong())).thenReturn(deviceReport);
-        mockMvc.perform(get("/api/csv/event?productId=WG11155638")).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get("/iot/event/v1?productId=WG11155638")).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
     @Description("Verify device not found with wrong id")
     void verifyDeviceNotFound() throws Exception {
         when(csvService.getEventByProductIdAndDateTime("xyz", null)).thenThrow(ResourceNotFoundException.class);
-        mockMvc.perform(get("/api/csv/event?productId=xyz")).andDo(print()).andExpect(status().isNotFound());
+        mockMvc.perform(get("/iot/event/v1?productId=xyz")).andDo(print()).andExpect(status().isNotFound());
     }
 
 }
