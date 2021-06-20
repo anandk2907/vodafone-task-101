@@ -1,0 +1,23 @@
+spring:
+ application:
+  name: ad-service
+ profiles:
+  active: local
+server:
+ port: 8088
+
+---
+spring:
+ config:
+  activate:
+   on-profile: local
+
+
+---
+spring:
+ jpa:
+  show-sql: true
+ config:
+  activate:
+   on-profile: test
+
